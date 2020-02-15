@@ -1,8 +1,23 @@
 <template>
   <div>
     <h3>Todos</h3>
+    <div class="legend">
+      <span>Double click to mark as complete</span>
+      <span>
+        <span class="incomplete-box"></span> = Incomplete
+      </span>
+      <span>
+        <span class="complete-box"></span> = Complete
+      </span>
+    </div>
     <div class="todos">
-      <div v-bind:key="todo.id" v-for="todo in allTodos" class="todo">
+      <div
+        v-bind:key="todo.id"
+        v-for="todo in allTodos"
+        class="todo"
+        @dblclick="markTodo(todo)"
+        v-bind:class="{'is-complete': todo.completed}"
+      >
         {{todo.title}}
         <i class="fas fas-trash-alt" @click="deleteTodo(todo.id)">X</i>
       </div>
@@ -16,7 +31,16 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Todos",
   methods: {
-    ...mapActions(["fetchTodos", "deleteTodo"])
+    ...mapActions(["fetchTodos", "deleteTodo", "updateTodo"]),
+    markTodo(todo) {
+      const updatedTodo = {
+        id: todo.id,
+        title: todo.title,
+        completed: !todo.completed
+      };
+
+      this.updateTodo(updatedTodo);
+    }
   },
   computed: mapGetters(["allTodos"]),
   created() {
