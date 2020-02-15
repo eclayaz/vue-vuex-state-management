@@ -2,7 +2,10 @@
   <div>
     <h3>Todos</h3>
     <div class="todos">
-      <div v-bind:key="todo.id" v-for="todo in allTodos" class="todo">{{todo.title}}</div>
+      <div v-bind:key="todo.id" v-for="todo in allTodos" class="todo">
+        {{todo.title}}
+        <i class="fas fas-trash-alt" @click="deleteTodo(todo.id)">X</i>
+      </div>
     </div>
   </div>
 </template>
@@ -13,7 +16,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Todos",
   methods: {
-    ...mapActions(["fetchTodos"])
+    ...mapActions(["fetchTodos", "deleteTodo"])
   },
   computed: mapGetters(["allTodos"]),
   created() {
